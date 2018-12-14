@@ -1,4 +1,7 @@
 #include <iostream>
+#include <exception>
+#include <stdexcept>
+#include <cstring>
 #include "src/base64.hpp"
 
 const char OPT_ENCODE[] = "-e";
