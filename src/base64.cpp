@@ -5,8 +5,7 @@ char base [] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
 
 char *base64_encode(const char *s) {
     int con = 0x3f, len = (int) strlen(s);
-    int temp;
-    char symb [4];
+    int temp = 0;
     char* encoded;
 
     if (strlen(s) % 3 == 0) {
@@ -25,7 +24,7 @@ char *base64_encode(const char *s) {
 
     if(len % 3 != 0){
         temp = 0;
-        for (int i = (int) (len - len % 3); i < len; i++){
+        for (int i = (len - len % 3); i < len; i++){
             temp = temp + (s[i] << (16 - 8*(i - (len - len%3))));
         }
         switch (len % 3){
@@ -43,7 +42,8 @@ char *base64_encode(const char *s) {
                 }
                     encoded[4*(len/3) + 3] = '=';
                 break;
-            default:{}
+            default:
+                break;
         }
 
     }
@@ -51,6 +51,39 @@ char *base64_encode(const char *s) {
     return encoded;
 }
 
+int lin_search(char key){
+    for (int i = 0; i < 63; i++){
+        if (key == base[i]){
+            return i;
+        }
+    }
+    return -1;
+}
+
 char *base64_decode(const char *s) {
-    return (char *)"decoded";
+    int len = (int) strlen(s), con = 255;
+    int temp, decLen;
+    if (s[len-2] == '='){
+        decLen = 3*len/4 - 1;
+    }
+    else if (s[len - 1] == '='){
+        decLen = 3*len/4;
+    }
+    else{
+        decLen = 3*len/4 + 1;
+    }
+    char* decoded = new char [decLen];
+    for (int i = 0, j = 0; i < len-1; i += 4, j += 3){
+        temp = 0;
+        for (int k = i; k < i + 4; k++){
+            if (lin_search(s[k]) != -1){
+                temp += (lin_search(s[k]) << (3 - (k- i))*6);
+            }
+        }
+        for (int k = j; (k < j + 3) && k < decLen; k++){
+            decoded[k] = (char)((temp & (con << (2 - (k - j))*8)) >> (2 - (k - j))*8);
+        }
+    }
+    decoded[strlen(decoded)] = '\0';
+    return decoded;
 }
