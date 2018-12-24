@@ -35,11 +35,19 @@ char *base64_encode(const char *s) {
 
     buf_4[0] = (buf_3[0] & 0xfc) >> 2;
     buf_4[1] = ((buf_3[0] & 0x03) << 4) + ((buf_3[1] & 0xf0) >> 4);
-    buf_4[2] = ((buf_3[1] & 0x0f) << 2) + ((buf_3[2] & 0xc0) >> 6);
+    buf_4[2] = ((buf_3[1] & 0x0f) << 2);
     for (j = 0; j < 3; j++) {
       cout << alf_64[buf_4[j]] << " ";
     }
+    cout << "=";
   } else if (len % three == 1) {
+    buf_3[0] = s[i * three];
+    buf_4[0] = (buf_3[0] & 0xfc) >> 2;
+    buf_4[1] = ((buf_3[0] & 0x03) << 4);
+    for (j = 0; j < 2; j++) {
+      cout << alf_64[buf_4[j]] << " ";
+    }
+    cout << "==";
   }
   return (char *)"encoded";
 }
