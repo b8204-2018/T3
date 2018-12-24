@@ -1,5 +1,6 @@
 #include <iostream>
 #include "src/base64.hpp"
+#include "string.h"
 
 const char OPT_ENCODE[] = "-e";
 const char OPT_DECODE[] = "-d";
