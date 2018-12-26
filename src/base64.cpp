@@ -16,6 +16,7 @@ char *base64_encode(const char *s) {
     len++;
   }
   char *result = new char[len * 2]; // array result base64_encode
+
   for (i = 0; i < len / three; i++) {
     buf_3[0] = s[i * three];
     buf_3[1] = s[i * three + 1];
@@ -30,6 +31,7 @@ char *base64_encode(const char *s) {
       result[j] = alf_64[buf_4[j - i * 4]];
     }
   }
+
   if (len % three == 2) { // remain 2 bytes
     buf_3[0] = s[i * three];
     buf_3[1] = s[i * three + 1];
@@ -37,18 +39,26 @@ char *base64_encode(const char *s) {
     buf_4[0] = (buf_3[0] & 0xfc) >> 2;
     buf_4[1] = ((buf_3[0] & 0x03) << 4) + ((buf_3[1] & 0xf0) >> 4);
     buf_4[2] = ((buf_3[1] & 0x0f) << 2);
-    for (j = i * 4; j <= 3 * (i + 1); j++) {
-      result[j] = alf_64[buf_4[j - i * 4]];
+
+    for (j = i * 4; j < 4 * (i + 1); j++) {
+      if (j < 4 * (i + 1) - 1) {
+        result[j] = alf_64[buf_4[j - i * 4]];
+      } else {
+        result[j] = 0x3d; //"="
+      }
     }
-    result[++j] = 0x3d;// "="
   } else if (len % three == 1) { // remain 1 byte
     buf_3[0] = s[i * three];
     buf_4[0] = (buf_3[0] & 0xfc) >> 2;
     buf_4[1] = ((buf_3[0] & 0x03) << 4);
-    for (j = 0; j < 2; j++) {
-      // cout << alf_64[buf_4[j]] << " ";
+
+    for (j = i * 4; j < 4 * (i + 1); j++) {
+      if (j < 4 * (i + 1) - 2) {
+        result[j] = alf_64[buf_4[j - i * 4]];
+      } else {
+        result[j] = 0x3d; //"="
+      }
     }
-    // cout << "==";
   }
 
   return result;
