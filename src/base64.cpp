@@ -71,6 +71,7 @@ char *base64_decode(const char *s) {
     const int four = 4;
     int i = 0;
     int j = 0;
+    int count_eql = 0;//count "="
     unsigned char buf_4[four], buf_3[3];
     int len = 0;
 
@@ -80,30 +81,26 @@ char *base64_decode(const char *s) {
 
     char *result = new char[len / four * 3]; // array result base64_encode
 
-    for (i = 0; i < len / four - 1; i++) {
+    for (i = 0; i < len / four; i++) {
 
 
         for (j = 0; j < four; j++) {
             buf_4[j] = 0;
-            while (alf_64[buf_4[j]] != s[i * four + j]) {
-                buf_4[j]++;
-            }
+            if (s[i * four + j] != 0x3d) {
+                while (alf_64[buf_4[j]] != s[i * four + j]) {
+                    buf_4[j]++;
+                }
+            } else { count_eql++; }
         }
 
         buf_3[0] = (buf_4[0] << 2) + ((buf_4[1] & 0x30) >> 4);
         buf_3[1] = ((buf_4[1] & 0xf) << 4) + ((buf_4[2] & 0x3c) >> 2);
         buf_3[2] = ((buf_4[2] & 0x3) << 6) + buf_4[3];
 
-        for (j = i * 3; j < 3 * (i + 1); j++) {
+        for (j = i * 3; j < 3 * (i + 1) - count_eql; j++) {
             result[j] = buf_3[j - i * 3];
         }
     }
-    
-
-/*
-    char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-    char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-*/
 
     return result;
 }
