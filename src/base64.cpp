@@ -18,9 +18,11 @@ char *base64_encode(const char *s) {
     while (s[len] != 0) {
         len++;
     }
+
+    int balance = len / three;
     char *result = new char[len * 2]; // array result base64_encode
 
-    for (i = 0; i < len / three; i++) {
+    for (i = 0; i < balance; i++) {
         buf_3[0] = s[i * three];
         buf_3[1] = s[i * three + 1];
         buf_3[2] = s[i * three + 2];
