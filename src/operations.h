@@ -5,9 +5,9 @@
 #ifndef BASE64_OPERATIONS_H
 #define BASE64_OPERATIONS_H
 
-char *encode(const unsigned char *s);
+char *encode(const char *s);
 
-char *decode(const unsigned char *s);
+char *decode(const char *s);
 
 #endif //BASE64_OPERATIONS_H
 
