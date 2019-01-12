@@ -3,9 +3,9 @@
 
 char *base64_encode(const char *s) {
     char base64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    int length = 0, j = 0;
+    int j = 0;
     unsigned char n;
-    for (int i = 0; s[i] != '\0'; i++, length++);
+    int length = strlen(s);
     char *add = new char[3];
     if (length % 3 == 0){
         add[0] = '\0';
@@ -71,8 +71,10 @@ unsigned char pos (char s){
 }
 
 char *base64_decode(const char *s) {
-    int length(0);
-    for (int i = 0; s[i + 1] != '\0'; i++, length++);
+    if (strcmp(s, "") == 0){
+        return (char*)"";
+    }
+    int length = strlen(s)-1;
     char *decoded = new char[length];
     unsigned char *add = new unsigned char [3];
     if (s[length] == '=' && s[length - 1] == '='){
@@ -103,11 +105,9 @@ char *base64_decode(const char *s) {
         j++;
         i += 4;
     }
-    i = 0;
-    while (add[i - 1] != '\0'){
+    for(i = 0; i <= strlen((char*)add); i++ ){
         decoded[j] = (char)(add[i]);
         j++;
-        i++;
     }
     return decoded;
 }

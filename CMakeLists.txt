@@ -1,26 +1,23 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.1)
 project(T3)
 
-set(CMAKE_CXX_STANDARD 17)
+enable_testing()
 
-#Add the google test subdirectory
+add_definitions(-std=gnu++17 -U__STRICT_ANSI__)
+
+set(LINKER_FLAGS1 -lcygwin)
+set(LINKER_FLAGS2 -lSDL2main)
+set(LINKER_FLAGS3 -lSDL2)
+set(LINKER_FLAGS4 -mwindows)
+
 add_subdirectory(googletest)
 
-#include googletest/include dir
+include_directories(src) # необходимо для того, чтобы писать в директиве просто lib.h
 include_directories(googletest/googletest/include)
 
-#include the googlemock/include dir
-include_directories(googletest/googlemock/include)
+set(SOURCE_FILES src/base64.cpp)
 
-add_executable(T3
-        src/base64.cpp
-        src/base64.hpp
-        main.cpp ${SOURCE_FILES})
-target_link_libraries(T3
-        src/base64.cpp
-        src/base64.hpp
-        main.cpp gtest gtest_main)
-target_link_libraries(T3
-        src/base64.cpp
-        src/base64.hpp
-        main.cpp gmock gmock_main)
+add_executable(main main.cpp ${SOURCE_FILES})
+add_executable(tests tests.cpp ${SOURCE_FILES})
+
+target_link_libraries(tests gtest)
