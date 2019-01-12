@@ -2,66 +2,65 @@
 #include<iostream>
 
 using namespace std;
-/* случайно сегодня изменил ветку master , испытав адский выброс адреналина в поисках способа откатить коммиты случайно удалил оригинал
- * пока еще не готово
- * данная версия даже не проверялась т.к писалась по памяти
- * пожадуйста запускайте
- * google test пока еще даже не пытался присоединять
- */
 
 const char base64[]{"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"};
 
 char *base64_encode(const char *s) {
     unsigned char in[3];
     unsigned char out[4];
-    int len = 0, i = 0;
-    char enc[len * 2];
+    int len = 0, i = 0, d = 0;
+
     while (s[len] != 0) {
         len++;
     }
+    (len % 3 != 0) ? (d = len / 3 * 4 + 4) : d = len / 3 * 4;
+
+    char *enc = new char[d];
     for (i = 0; i < len / 3; i++) {
         in[0] = s[3 * i];
         in[1] = s[3 * i + 1];
         in[2] = s[3 * i + 2];
 
-        out[0] = (in[0] & 0xfc >> 2);
+        out[0] = ((in[0] & 0xfc) >> 2);
         out[1] = (((in[0] & 0x03) << 4) + ((in[1] & 0xf0) >> 4));
         out[2] = (((in[1] & 0x0f) << 2) + ((in[2] & 0xc0) >> 6));
         out[3] = (in[2] & 0x3f);
 
         for (int j = 4 * i; j < 4 * (i + 1); j++) {
-            enc[j] = base64[out[j - i]];
+            enc[j] = base64[out[j - i * 4]];
         }
 
     }
     switch (len % 3) {
         case 1: {
             in[0] = s[3 * i];
-            out[0] = (in[0] & 0xfc >> 2);
+            out[0] = ((in[0] & 0xfc) >> 2);
             out[1] = ((in[0] & 0x03) << 4);
             for (int j = 4 * i; j < 4 * (i + 1); j++) {
                 if (j < 4 * (i + 1) - 2) {
-                    enc[j] = base64[j - i];
+                    enc[j] = base64[out[j - i * 4]];
                 } else {
                     enc[j] = 0x3D;
                 }
             }
+            break;
         }
         case 2: {
             in[0] = s[3 * i];
             in[1] = s[3 * i + 1];
 
-            out[0] = (in[0] & 0xfc >> 2);
-            out[1] = (((in[0] & 0x03) << 4) + ((in[1] & 0xf0) >> 4));
+            out[0] = ((in[0] & 0xfc) >> 2);
+            out[1] = ((in[0] & 0x03) << 4) + ((in[1] & 0xf0) >> 4);
             out[2] = ((in[1] & 0x0f) << 2);
 
             for (int j = 4 * i; j < 4 * (i + 1); j++) {
                 if (j < 4 * (i + 1) - 1) {
-                    enc[j] = base64[j - i];
+                    enc[j] = base64[out[j - i * 4]];
                 } else {
                     enc[j] = 0x3D;
                 }
             }
+            break;
         }
     }
 
@@ -72,31 +71,38 @@ char *base64_encode(const char *s) {
 char *base64_decode(const char *s) {
     unsigned char in[4];
     unsigned char out[3];
-    int len = 0;
+    int len = 0,k=0;
+
     while (s[len] != 0) {
         len++;
     }
-    char dec[len / 4 * 3];
-    int k = 0;
+
+    char *dec = new char[len / 4 * 3];
+
     for (int i = 0; i < len / 4; i++) {
+in[0]=0;
+in[1]=0;
+in[2]=0;
+in[3]=0;
+
         for (int j = 0; j < 4; j++) {
-            if (s[i * 4 + j] == 0x3D) {
+            if (s[i * 4 + j] != 0x3d) {
+                while (base64[in[j]] != s[i * 4 + j]) {
+                    in[j]++;
+                }
+            } else {
                 k++;
             }
         }
-        in[0] = s[4 * i];
-        in[1] = s[4 * i + 1];
-        in[2] = s[4 * i + 2];
-        in[3] = s[4 * i + 3];
 
-        out[0] = (in[0] << 2 | in[1] >> 4);
-        out[1] = (in[1] << 4 | in[2] >> 2);
-        out[2] = (((in[2] << 6) & 0xc0) | in[3]);
+        out[0] = (in[0] << 2) + ((in[1] & 0x30) >> 4);
+        out[1] = ((in[1] & 0xf) << 4) + ((in[2] & 0x3c) >> 2);
+        out[2] = ((in[2] & 0x3) << 6) + in[3];
 
-        for (int c=3*i;c<3*(i+1)-k;c++){
-            dec[c]=out[c-i];
+        for (int j = i * 3; j < 3 * (i + 1) - k; j++) {
+            dec[j] = out[j - i * 3];
         }
-
     }
+
     return dec;
 }
