@@ -8,7 +8,7 @@
 TEST(Base64Test, TestEncode) {
     ASSERT_STREQ(encode("MyFriend"), "TXlGcmllbmQ=");
     ASSERT_STREQ(encode("gfHJDkdllcyruerett"), "Z2ZISkRrZGxsY3lydWVyZXR0");
-    ASSERT_STREQ(encode("ladies and gentleman we got him"), "VGhleSB3ZXJlIGdyZWF0IHBlb3BsZSB3aXRoIGh1Z2UgZmxhd3M=");
+    ASSERT_STREQ(encode("They were great people with huge flaws"), "VGhleSB3ZXJlIGdyZWF0IHBlb3BsZSB3aXRoIGh1Z2UgZmxhd3M=");
     ASSERT_STREQ(encode("KK"), "S0s=");
 }
 
