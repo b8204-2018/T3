@@ -1,14 +1,18 @@
-#ifndef T3_BASE64_H
-#define T3_BASE64_H
+//
+// Created by 1 on 13.01.2019.
+//
+
+#ifndef UNTITLED10_BASE64_H
+#define UNTITLED10_BASE64_H
 
 /*
  * Преобразует(кодирует) переданный массив символов в base64
  */
-char *base64_encode(const char *);
+char *encode(const char *s);
 
 /*
  * Преобразует(декодирует) переданный массив символов из base64
  */
-char *base64_decode(const char *);
+char *decode(const char *s);
 
-#endif //T3_BASE64_H
+#endif //UNTITLED10_BASE64_H
