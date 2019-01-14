@@ -35,7 +35,6 @@ char *encode(const char *s) {
             g = 0;
             step = 1;
             z = 0;
-
         }
 
         if (m >= n) {
@@ -49,7 +48,6 @@ char *encode(const char *s) {
             z = (z<<2) | 3;
             g = s[m] & z;
         }
-
     }
 
     sdvig = n % 3;
