@@ -11,7 +11,7 @@ char *base64_encode(const char *s) {
 
    int length(0), j(0);
    unsigned char n;
-   for (int i = 0; s[i] != '\0'; i++, length++);
+   length = strlen(s);
    char *decode =  new char[length * 2];
    char *add = new char[3];
    if (length % 3 == 0){
@@ -47,7 +47,7 @@ char *base64_encode(const char *s) {
         n = (unsigned char)s[i] >> 2;
         memcpy(decode + j, alphabet[n], 1);
         j++;
-        n = ((unsigned char)(s[i] << 6) >> 2) + (unsigned char)(s[i + 1] >> 4);
+        n = ((unsigned char)(s[i] << 6) >> 2) + ((unsigned char)(s[i + 1]) >> 4);
         memcpy(decode + j, alphabet[n], 1);
         j++;
         n = ((unsigned char)(s[i + 1] << 4)) >> 2;
@@ -79,11 +79,11 @@ char *base64_decode(const char *s) {
                           "3", "4", "5", "6", "7","8", "9", "+", "/"};
 
     int length(0);
-    for (int i = 0; s[i + 1] != '\0'; i++, length++);
+    for (int i = 0; s[i] != '\0'; i++, length++);
     char *encode = new char[length];
     int eq(0);
-    if (s[length] == '=') {eq = 1;}
-    if (s[length-1] == '=') {eq = 2;}
+    if (s[length - 1] == '=') {eq = 1;}
+    if (s[length - 2] == '=') {eq = 2;}
     int count(1), i(0), j(0);
     unsigned char n, poz, poz1;
     while (count <= ((length - eq + 1) / 4)) {
@@ -104,6 +104,7 @@ char *base64_decode(const char *s) {
         encode[j] = n;
         j++;
         count++;
+        if (eq == 1) { count++; }
         i += 3;
     }
     if (eq == 1) {
@@ -119,15 +120,18 @@ char *base64_decode(const char *s) {
         n = (poz << 4) + (poz1 >> 2);
         encode[j] = n;
         j++;
+        encode[j] = '\0';
     }
-    if (eq == 2) {
+    else if (eq == 2) {
         i++;
         for(poz = 0; s[i] != *alphabet[poz]; poz++);
         for(poz1 = 0; s[i + 1] != *alphabet[poz1]; poz1++);
         n = (poz << 2) + (poz1 >> 4);
         encode[j] = n;
         j++;
+        encode[j] = '\0';
+    } else {
+        encode[j] = '\0';
     }
-
     return encode;
 }
