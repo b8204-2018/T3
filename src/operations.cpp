@@ -2,6 +2,9 @@
 #include <iostream>
 #include <bitset>
 
+#define EMPTY_STRING "Empty string";
+#define WRONG_LETTER "Unknown letter in string";
+
 static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                                 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
                                 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
@@ -14,77 +17,81 @@ static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
 
 char *encode(const char *s) {
 
-    /** Count original letters */
-    int i = 0;
+    if (s[0] == '\0') { throw EMPTY_STRING }
+    else {
 
-    while (s[i] != '\0') {
-        i++;
-    }
+        /** Count original letters */
+        int i = 0;
 
-    int OSL_count = i;
+        while (s[i] != '\0') {
+            i++;
+        }
 
-    /** Count result string letters */
-    if (i % 3 == 0) {
-        i = (i * 4) / 3 + 1;
-    } else {
-        i = ((i / 3) + 1) * 4 + 1;
-    }
+        int OSL_count = i;
 
-    /** Var */
-    char *res = new char[i];
-    res[i] = '\0';
-    int this_r_part = 0;
-    int m_count = 0;
-    int sdvig;
-    int l = 0;
-    int step = 1;
-
-    /** Main algorithm  */
-    while (l < i) {
-
-
-        sdvig = step * 2;
-
-        if (m_count >= OSL_count) {
-            res[l] = (this_r_part << (8 - sdvig));
-            this_r_part = 0;
-
+        /** Count result string letters */
+        if (i % 3 == 0) {
+            i = (i * 4) / 3 + 1;
         } else {
-            res[l] = (s[m_count] >> sdvig) + (this_r_part << (8 - sdvig));
-            this_r_part = s[m_count] & (3 + (12 * (step - 1) + (36 * ((step - 1) / 2))));
+            i = ((i / 3) + 1) * 4 + 1;
         }
 
-        m_count++;
-        l++;
-        step++;
+        /** Var */
+        char *res = new char[i];
+        res[i] = '\0';
+        int this_r_part = 0;
+        int m_count = 0;
+        int sdvig;
+        int l = 0;
+        int step = 1;
 
-        if (step == 4) {
-            res[l] = this_r_part;
+        /** Main algorithm  */
+        while (l < i) {
+
+
+            sdvig = step * 2;
+
+            if (m_count >= OSL_count) {
+                res[l] = (this_r_part << (8 - sdvig));
+                this_r_part = 0;
+
+            } else {
+                res[l] = (s[m_count] >> sdvig) + (this_r_part << (8 - sdvig));
+                this_r_part = s[m_count] & (3 + (12 * (step - 1) + (36 * ((step - 1) / 2))));
+            }
+
+            m_count++;
             l++;
-            this_r_part = 0;
-            step = 1;
+            step++;
+
+            if (step == 4) {
+                res[l] = this_r_part;
+                l++;
+                this_r_part = 0;
+                step = 1;
+            }
         }
-    }
 
-    /** Empty last bits */
-    sdvig = OSL_count % 3;
+        /** Empty last bits */
+        sdvig = OSL_count % 3;
 
-    l--;
-    while ((sdvig != 3) && (sdvig != 0)) {
         l--;
-        res[l] = '=';
-        sdvig++;
+        while ((sdvig != 3) && (sdvig != 0)) {
+            l--;
+            res[l] = '=';
+            sdvig++;
+        }
+
+        /** Convert result to original */
+        i = 0;
+
+        while (i < l) {
+            res[i] = encoding_table[res[i]];
+            i++;
+        }
+
+        return res;
     }
-
-    /** Convert result to original */
-    i = 0;
-
-    while (i < l) {
-        res[i] = encoding_table[res[i]];
-        i++;
-    }
-
-    return res;
 }
 
 char *decode(const char *s) {
@@ -95,44 +102,52 @@ char *decode(const char *s) {
         l++;
     }
 
-    l = (l % 4) + ((l / 4) * 3) + 1;
+    if (l == 0) { throw EMPTY_STRING }
+    else {
 
-    char *res = new char[l];
-    res[l] = '\0';
+        l = (l % 4) + ((l / 4) * 3) + 1;
 
-    /** Search letter in encoding table */
-    l = 0;
-    int i;
-    while ((s[l] != '\0') && (s[l] != '=')) {
-        for (i = 0; i <= 63; i++) {
-            if (encoding_table[i] == s[l]) {
-                break;
+        char *res = new char[l];
+        res[l] = '\0';
+
+        /** Search letter in encoding table */
+        l = 0;
+        int i;
+        while ((s[l] != '\0') && (s[l] != '=')) {
+            for (i = 0; i <= 63; i++) {
+                if (encoding_table[i] == s[l]) {
+                    break;
+                }
+            }
+            if (i == 64)
+                throw WRONG_LETTER
+            else {
+                res[l] = i;
+                l++;
             }
         }
-        res[l] = i;
-        l++;
-    }
 
-    /** main algorithm */
-    int sdvig;
-    int step = 1;
-    int new_array_counter = 0;
-    l = 0;
+        /** main algorithm */
+        int sdvig;
+        int step = 1;
+        int new_array_counter = 0;
+        l = 0;
 
-    while (s[l] != '\0') {
-        sdvig = step * 2;
+        while (s[l] != '\0') {
+            sdvig = step * 2;
 
-        res[new_array_counter] = (res[l] << sdvig) + (res[l + 1] >> (6 - sdvig));
-        step++;
+            res[new_array_counter] = (res[l] << sdvig) + (res[l + 1] >> (6 - sdvig));
+            step++;
 
-        l++;
+            l++;
 
-        if (step == 5) {
-            step = 1;
-        } else {
-            new_array_counter++;
+            if (step == 5) {
+                step = 1;
+            } else {
+                new_array_counter++;
+            }
         }
-    }
 
-    return res;
+        return res;
+    }
 }
