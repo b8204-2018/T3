@@ -22,16 +22,16 @@ char *base64_encode(const char *s) {
     char *encoded =  new char[2 * length];
     int i(0);
     while ((length - i) > (strlen(add) + 1)){
-        n = ((unsigned char)s[i]) >> 2;//110011|00 >> 001100|11 = n
+        n = ((unsigned char)s[i]) >> 2;
         memcpy(encoded + j, base64 + n, 1);
         j++;
-        n = ((unsigned char)(s[i] << 6) >> 2) + ((unsigned char)s[i + 1] >> 4);//(110011|00 >> 000000|00) + (1101|0101 >> 0000|1101) = 0000|1101 = n
+        n = ((unsigned char)(s[i] << 6) >> 2) + ((unsigned char)s[i + 1] >> 4);
         memcpy(encoded + j, base64 + n, 1);
         j++;
-        n =((unsigned char)(s[i + 1] << 4) >> 2) + ((unsigned char)s[i + 2] >> 6);//(1101|0101 >> 0001|0100) + (01|001110 >> 00|000001) = 00|010101 = n
+        n =((unsigned char)(s[i + 1] << 4) >> 2) + ((unsigned char)s[i + 2] >> 6);
         memcpy(encoded + j, base64 + n, 1);
         j++;
-        n = ((unsigned char)(s[i + 2] << 2) >> 2);//01|001110 >> 00|001110 = n
+        n = ((unsigned char)(s[i + 2] << 2) >> 2);
         memcpy(encoded + j, base64 + n, 1);
         j++;
         i += 3;
