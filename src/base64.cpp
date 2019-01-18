@@ -1,5 +1,6 @@
 #include "base64.hpp"
 #include <cstring>
+#include <stdexcept>
 
 char *base64_encode(const char *s) {
     char base64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -67,6 +68,18 @@ unsigned char pos (char s){
 }
 
 char *base64_decode(const char *s) {
+    if (strlen(s) % 4 != 0){
+        throw std::invalid_argument("Error: incorrect string.");
+    } else {
+        char base64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        int i(0), j(0);
+        for (i = 0; i < strlen(s); i++) {
+            for (j = 0; (s[i] != base64[j]) && (j < strlen(base64)); j++);
+            if (j == strlen(base64) - 1 && (s[i] != base64[j - 1])) {
+                throw std::invalid_argument("Error: invalid symbols in string.");
+            }
+        }
+    }
     if (strcmp(s, "") == 0){
         return (char*)"";
     }
