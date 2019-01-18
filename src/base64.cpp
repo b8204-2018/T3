@@ -22,16 +22,16 @@ char *base64_encode(const char *s) {
     char *encoded =  new char[2 * length];
     int i(0);
     while ((length - i) > (strlen(add) + 1)){
-        n = ((unsigned char)s[i]) >> 2;
+        n = ((unsigned char)s[i]) >> 2;//110011|00 >> 001100|11 = n
         memcpy(encoded + j, base64 + n, 1);
         j++;
-        n = ((unsigned char)(s[i] << 6) >> 2) + ((unsigned char)s[i + 1] >> 4);
+        n = ((unsigned char)(s[i] << 6) >> 2) + ((unsigned char)s[i + 1] >> 4);//(110011|00 >> 000000|00) + (1101|0101 >> 0000|1101) = 0000|1101 = n
         memcpy(encoded + j, base64 + n, 1);
         j++;
-        n =((unsigned char)(s[i + 1] << 4) >> 2) + ((unsigned char)s[i + 2] >> 6);
+        n =((unsigned char)(s[i + 1] << 4) >> 2) + ((unsigned char)s[i + 2] >> 6);//(1101|0101 >> 0001|0100) + (01|001110 >> 00|000001) = 00|010101 = n
         memcpy(encoded + j, base64 + n, 1);
         j++;
-        n = ((unsigned char)(s[i + 2] << 2) >> 2);
+        n = ((unsigned char)(s[i + 2] << 2) >> 2);//01|001110 >> 00|001110 = n
         memcpy(encoded + j, base64 + n, 1);
         j++;
         i += 3;
@@ -55,11 +55,7 @@ char *base64_encode(const char *s) {
         memcpy(encoded + j, base64 + n, 1);
         j++;
     }
-
-    for (int i = 0; i < strlen(add) + 1; i++){
-        memcpy(encoded + j, add + i, 1);
-        j++;
-    }
+    memcpy(encoded + j, add, strlen(add) + 1);
     return encoded;
 }
 
@@ -74,7 +70,7 @@ char *base64_decode(const char *s) {
     if (strcmp(s, "") == 0){
         return (char*)"";
     }
-    int length = strlen(s)-1;
+    int length = strlen(s) - 1;
     char *decoded = new char[length];
     unsigned char *add = new unsigned char [3];
     if (s[length] == '=' && s[length - 1] == '='){
@@ -105,9 +101,6 @@ char *base64_decode(const char *s) {
         j++;
         i += 4;
     }
-    for(i = 0; i <= strlen((char*)add); i++ ){
-        decoded[j] = (char)(add[i]);
-        j++;
-    }
+    memcpy(decoded + j, add, strlen((const char*)add) + 1);
     return decoded;
 }

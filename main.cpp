@@ -5,14 +5,6 @@
 const char OPT_ENCODE[] = "-e";
 const char OPT_DECODE[] = "-d";
 
-/*
- * Тест не собирается.
- * Куча ошибок:
- * https://gist.github.com/SpiderKisa/4c28a2a5202b9cee46068c1e46cc24e1
- * */
-TEST(TEST_Base64, Encode) {
-    EXPECT_STREQ("RWwgUHN5IENvbmdyb28=", base64_encode((const char*)"El Psy Congroo"));
-}
 
 int main(int argc, char *argv[]) {
     if (argc == 1 || argc > 3) {
