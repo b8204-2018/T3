@@ -1,15 +1,22 @@
 #include <iostream>
+#include <cstring>
 #include "src/base64.hpp"
+#include "gtest/gtest.h"
+
+using namespace std;
 
 const char OPT_ENCODE[] = "-e";
 const char OPT_DECODE[] = "-d";
 
 int main(int argc, char *argv[]) {
+    //char *s = base64_decode((const char*)"dXBkYXRpbmc=");
+
     if (argc == 1 || argc > 3) {
         throw std::invalid_argument("No arguments provided");
     }
 
     if (argc == 2) {
+        std::cout << endl;
         std::cout << base64_encode(argv[1]);
     }
 
