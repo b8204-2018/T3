@@ -2,19 +2,19 @@
 #include "gtest/gtest.h"
 
 TEST(Encode, threeLetters) {
-    char *s = base64_encode((const char*)"ups");
-    EXPECT_STREQ(s, "dXBz");
+    char *s = base64_encode((const char*)"Test");
+    EXPECT_STREQ(s, "VGVzdA==");
 }
 
 
 TEST(Encode, fourLetters) {
-    char *s = base64_encode((const char*)"oops");
-    EXPECT_STREQ(s, "b29wcw==");
+    char *s = base64_encode((const char*)"Sunday");
+    EXPECT_STREQ(s, "U3VuZGF5");
 }
 
 TEST(Encode, fiveLetters) {
-    char *s = base64_encode((const char*)"param");
-    EXPECT_STREQ(s, "cGFyYW0=");
+    char *s = base64_encode((const char*)"Mouse");
+    EXPECT_STREQ(s, "TW91c2U=");
 }
 
 
@@ -24,14 +24,14 @@ TEST(Encode, empty) {
 }
 
 TEST(Decode, noEqualSigns) {
-    char *s = base64_decode((const char*)"ZG9n");
-    EXPECT_STREQ(s, "dog");
+    char *s = base64_decode((const char*)"VGVzdA==");
+    EXPECT_STREQ(s, "Test");
 }
 
 
 TEST(Decode, twoEqualSigns) {
-    char *s = base64_decode((const char*)"ZG9nZw==");
-    EXPECT_STREQ(s, "dogg");
+    char *s = base64_decode((const char*)"SGVsbG8=");
+    EXPECT_STREQ(s, "Hello");
 }
 
 TEST(Decode, empty) {
@@ -40,8 +40,8 @@ TEST(Decode, empty) {
 }
 
 TEST(Decode, oneEqualSign) {
-    char *s = base64_decode((const char*)"ZG9nIGc=");
-    EXPECT_STREQ(s, "dog g");
+    char *s = base64_decode((const char*)"RGF5");
+    EXPECT_STREQ(s, "Day");
 }
 
 int main(int argc, char **argv) {

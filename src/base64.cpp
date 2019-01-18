@@ -9,7 +9,7 @@ char *base64_encode(const char *s) {
                          "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2",
                          "3", "4", "5", "6", "7","8", "9", "+", "/"};
 
-   int length(0), j(0);
+   int length = 0, j = 0;
    unsigned char n;
    length = strlen(s);
    char *decode =  new char[length * 2];
@@ -26,7 +26,7 @@ char *base64_encode(const char *s) {
         add[0] = '=';
         add[1] = '\0';
     }
-    int i(0), count(1);
+    int i = 0, count = 1;
     while (count <= (length / 3)){
         n = ((unsigned char)s[i]) >> 2;
         memcpy(decode + j, alphabet[n], 1);
@@ -78,16 +78,16 @@ char *base64_decode(const char *s) {
                           "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2",
                           "3", "4", "5", "6", "7","8", "9", "+", "/"};
 
-    int length(0);
+    int length = 0;
     for (int i = 0; s[i] != '\0'; i++, length++);
     char *encode = new char[length];
-    int eq(0);
+    int eq = 0;
     if (s[length - 1] == '=') {eq = 1;}
     if (s[length - 2] == '=') {eq = 2;}
-    int count(1), i(0), j(0);
+    int count = 1, i = 0, j = 0;
     unsigned char n, poz, poz1;
     while (count <= ((length - eq + 1) / 4)) {
-        for(poz = 0; s[i] != *alphabet[poz]; poz++);
+        for(poz = 0; s[i] != *alphabet[poz]; poz++); //бежим по алфавиту
         n = poz << 2;
         encode[j] = n;
         j++;
