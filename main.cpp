@@ -36,6 +36,7 @@
      ASSERT_THROW(encode(""),const char*);
      ASSERT_THROW(decode(""),const char*);
      ASSERT_THROW(decode("русские буквы"),const char*);
+     ASSERT_THROW(decode("XyA"),const char*);
  }
 
 

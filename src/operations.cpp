@@ -4,6 +4,7 @@
 
 #define EMPTY_STRING "Empty string";
 #define WRONG_LETTER "Unknown letter in string";
+#define INVALID_STRING_LENGTH "Invalid string length";
 
 static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
                                 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -98,56 +99,64 @@ char *decode(const char *s) {
 
     int l = 0;
 
-    while ((s[l] != '\0') && (s[l] != '=')) {
+    while (s[l] != '\0')
         l++;
-    }
 
-    if (l == 0) { throw EMPTY_STRING }
+
+    if (l % 4 != 0) {throw INVALID_STRING_LENGTH}
     else {
-
-        l = (l % 4) + ((l / 4) * 3) + 1;
-
-        char *res = new char[l];
-        res[l] = '\0';
-
-        /** Search letter in encoding table */
         l = 0;
-        int i;
         while ((s[l] != '\0') && (s[l] != '=')) {
-            for (i = 0; i <= 63; i++) {
-                if (encoding_table[i] == s[l]) {
-                    break;
+            l++;
+        }
+
+        if (l == 0) { throw EMPTY_STRING }
+        else {
+
+            l = (l % 4) + ((l / 4) * 3) + 1;
+
+            char *res = new char[l];
+            res[l] = '\0';
+
+            /** Search letter in encoding table */
+            l = 0;
+            int i;
+            while ((s[l] != '\0') && (s[l] != '=')) {
+                for (i = 0; i <= 63; i++) {
+                    if (encoding_table[i] == s[l]) {
+                        break;
+                    }
+                }
+                if (i == 64)
+                    throw WRONG_LETTER
+                else {
+                    res[l] = i;
+                    l++;
                 }
             }
-            if (i == 64)
-                throw WRONG_LETTER
-            else {
-                res[l] = i;
+
+            /** main algorithm */
+            int sdvig;
+            int step = 1;
+            int new_array_counter = 0;
+            l = 0;
+
+            while (s[l] != '\0') {
+                sdvig = step * 2;
+
+                res[new_array_counter] = (res[l] << sdvig) + (res[l + 1] >> (6 - sdvig));
+                step++;
+
                 l++;
+
+                if (step == 5) {
+                    step = 1;
+                } else {
+                    new_array_counter++;
+                }
             }
+
+            return res;
         }
-
-        /** main algorithm */
-        int sdvig;
-        int step = 1;
-        int new_array_counter = 0;
-        l = 0;
-
-        while (s[l] != '\0') {
-            sdvig = step * 2;
-
-            res[new_array_counter] = (res[l] << sdvig) + (res[l + 1] >> (6 - sdvig));
-            step++;
-
-            l++;
-
-            if (step == 5) {
-                step = 1;
-            } else {
-                new_array_counter++;
-            }
-        }
-
-        return res;
     }
 }
