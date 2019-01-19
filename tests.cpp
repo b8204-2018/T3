@@ -39,6 +39,11 @@ TEST(Decode, empty) {
     EXPECT_STREQ(s, "");
 }
 
+TEST(Decoding, Exceptions) {
+
+    EXPECT_THROW(base64_decode((const char*)"AAA"), std::invalid_argument);
+    EXPECT_THROW(base64_decode((const char*)"******"), std::invalid_argument);
+}
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
