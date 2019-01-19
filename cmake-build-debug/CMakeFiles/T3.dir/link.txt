@@ -1,0 +1,1 @@
+/usr/bin/c++.exe -g  -Wl,--enable-auto-import CMakeFiles/T3.dir/main.cpp.o CMakeFiles/T3.dir/src/base64.cpp.o  -o T3.exe -Wl,--out-implib,libT3.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

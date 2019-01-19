@@ -1,11 +1,12 @@
 #include <iostream>
 #include "src/base64.hpp"
-
+#include <cstring>
+using namespace std;
 const char OPT_ENCODE[] = "-e";
 const char OPT_DECODE[] = "-d";
 
 int main(int argc, char *argv[]) {
-    if (argc == 1 || argc > 3) {
+   if (argc == 1 || argc > 3) {
         throw std::invalid_argument("No arguments provided");
     }
 
@@ -20,7 +21,21 @@ int main(int argc, char *argv[]) {
         } else if (strcmp(OPT_DECODE, argv[i++]) == 0 || strcmp(OPT_DECODE, argv[i--]) == 0) {
             std::cout << base64_decode(argv[i]);
         }
-    }
+    }*/
 
+	 system("pause");
     return 0;
 }
+
+
+
+
+
+
+
+
+/*			vre					      jhy
+	011001 100110 011001 100110		000100 010001 00010
+	011001 100110 011001 100110		
+			ABFR					GTR
+	*/

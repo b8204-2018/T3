@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/d/GIT/LOC/T3/src/base64.cpp
+base64.hpp
+/cygdrive/d/GIT/LOC/T3/src/base64.hpp
+iostream
+-
+cstring
+-
+
+/cygdrive/d/GIT/LOC/T3/src/base64.hpp
+
