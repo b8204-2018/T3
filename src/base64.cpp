@@ -6,6 +6,10 @@
 #include <iostream>
 #include <bitset>
 
+#define EMPTY_STRING "Empty string";
+#define WRONG_LETTER "Unknown letter in string";
+#define INVALID_STRING_LENGTH "Invalid string length";
+
 static char encoding[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
                           'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
                           'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
@@ -61,35 +65,57 @@ char *encode(const char *s) {
 
 char *decode(const char *s) {
 
-    int l = 0, n =0, p = 0;
-    for (p = 0 ; (s[p] != '\0') && (s[p] != '='); p++);
-    n = (p % 4) + ((p / 4) * 3);
 
-    char *res = new char[l];
-    res[p] = '\0';
-    int i;
+    int l = 0, n = 0, p = 0;
 
-    for (;(s[l] != '\0') && (s[l] != '='); l++) {
-        for (i = 0; i <= 63; i++) {
-            if (encoding [i] == s[l]) {
-                break;
+    while (s[l] != '\0')
+        l++;
+
+
+    if (l % 4 != 0) { throw INVALID_STRING_LENGTH }
+    else {
+        l = 0;
+        for (p = 0; (s[p] != '\0') && (s[p] != '='); p++);
+
+
+    }
+
+    if (p == 0) { throw EMPTY_STRING }
+    else {
+
+        n = (p % 4) + ((p / 4) * 3);
+
+        char *res = new char[p];
+        res[p] = '\0';
+        int i;
+
+        for (; (s[l] != '\0') && (s[l] != '='); l++) {
+            for (i = 0; i <= 63; i++) {
+                if (encoding[i] == s[l]) {
+                    break;
+                }
+            }
+            if (i == 64)
+                throw WRONG_LETTER
+            else {
+                res[l] = i;
             }
         }
-        res[l] = i;
+
+        for (int l = 0, step = 1, count = 0, z = 0, sdvig; l < p; step++, l++, count++) {
+
+            if (step == 4) {
+                step = 1;
+                l++;
+                z = 0;
+            }
+
+            z = (z >> 2) | 48;
+            sdvig = step * 2;
+            res[count] = (res[l] << sdvig) + ((res[l + 1] & z) >> (6 - sdvig));
+        }
+        res[n - 1] = '\0';
+
+        return res;
     }
-
-    for (int l = 0, step = 1, count = 0, z = 0, sdvig; l < p ; step++, l++, count ++) {
-
-        if (step == 4) {
-            step = 1;
-            l++;
-            z = 0;}
-
-        z = (z>>2) | 48;
-        sdvig = step * 2;
-        res[count] = (res[l] << sdvig) + ((res[l + 1] & z)>>(6 - sdvig));
-    }
-    res[n-1] = '\0';
-
-    return res;
 }

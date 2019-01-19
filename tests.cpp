@@ -33,3 +33,10 @@ TEST(Base64Test, TestEncodeDecode) {
                  "VGhleSB3ZXJlIGdyZWF0IHBlb3BsZSB3aXRoIGh1Z2UgZmxhd3M=");
     ASSERT_STREQ(encode(decode("S0s=")), "S0s=");
 }
+
+TEST(BasicTest,StringsTest){
+    ASSERT_THROW(encode(""),const char*);
+    ASSERT_THROW(decode(""),const char*);
+    ASSERT_THROW(decode("ававцц"),const char*);
+    ASSERT_THROW(decode("LKI"),const char*);
+}
