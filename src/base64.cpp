@@ -80,10 +80,10 @@ char *base64_decode(const char *s) {
     char *dec = new char[len / 4 * 3];
 
     for (int i = 0; i < len / 4; i++) {
-in[0]=0;
-in[1]=0;
-in[2]=0;
-in[3]=0;
+        in[0]=0;
+        in[1]=0;
+        in[2]=0;
+        in[3]=0;
 
         for (int j = 0; j < 4; j++) {
             if (s[i * 4 + j] != 0x3d) {

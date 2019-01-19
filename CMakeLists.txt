@@ -1,6 +1,18 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.12.3)
 project(T3)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
-add_executable(T3 src/base64.cpp src/base64.hpp main.cpp)
+add_subdirectory(googletest)
+
+include_directories(libs/googletest/googletest/include)
+
+include_directories(src)
+
+add_executable(T3
+        src/base64.cpp
+        src/base64.hpp
+        CMakeLists.txt
+        main.cpp)
+
+target_link_libraries(T3 gtest gtest_main)

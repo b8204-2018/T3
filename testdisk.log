@@ -1,0 +1,44 @@
+
+
+Tue Jan  8 01:35:47 2019
+Command line: TestDisk
+
+TestDisk 7.0, Data Recovery Utility, April 2015
+Christophe GRENIER <grenier@cgsecurity.org>
+http://www.cgsecurity.org
+OS: Linux, kernel 4.15.0-20-generic (#21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018) x86_64
+Compiler: GCC 7.2
+ext2fs lib: 1.44.1, ntfs lib: libntfs-3g, reiserfs lib: none, ewf lib: none, curses lib: ncurses 6.0
+/dev/sda: LBA, HPA, LBA48, DCO support
+/dev/sda: size       488397168 sectors
+/dev/sda: user_max   488397168 sectors
+/dev/sda: native_max 488397168 sectors
+/dev/sda: dco        488397168 sectors
+/dev/sdb: LBA, LBA48 support
+/dev/sdb: size       1953525168 sectors
+/dev/sdb: user_max   1953525168 sectors
+Warning: can't get size for Disk /dev/mapper/control - 0 B - 0 sectors, sector size=512
+Hard disk list
+Disk /dev/sda - 250 GB / 232 GiB - CHS 30401 255 63, sector size=512 - Samsung SSD 860 EVO M.2 250GB, S/N:S413NB0K517100H, FW:RVT21B6Q
+Disk /dev/sdb - 1000 GB / 931 GiB - CHS 121601 255 63, sector size=512 - WDC WD10SPZX-21Z10T0, S/N:WD-WXJ1A679NS9L, FW:02.01A02
+
+Partition table type (auto): EFI GPT
+Disk /dev/sdb - 1000 GB / 931 GiB - WDC WD10SPZX-21Z10T0
+Partition table type: EFI GPT
+
+Interface Advanced
+hdr_size=92
+hdr_lba_self=1
+hdr_lba_alt=1953525167 (expected 1953525167)
+hdr_lba_start=34
+hdr_lba_end=1953525134
+hdr_lba_table=2
+hdr_entries=128
+hdr_entsz=128
+ 1 P MS Data                   239616 1797918719 1797679104 [Basic data partition]
+     NTFS, blocksize=4096, 920 GB / 857 GiB
+ 4 P Linux Swap            1797918720 1813919743   16001024
+ 5 P Unknown               1813919744 1951424511  137504768
+ 2 P Unknown               1951424512 1952446463    1021952 [Basic data partition]
+ 3 P EFI System            1952446464 1952651263     204800 [EFI system partition]
+SIGHUP detected! TestDisk has been killed.
