@@ -1,12 +1,17 @@
 #include <iostream>
+#include <cstring>
 #include "src/base64.hpp"
+#include "gtest/gtest.h"
+
+using namespace std;
 
 const char OPT_ENCODE[] = "-e";
 const char OPT_DECODE[] = "-d";
 
 int main(int argc, char *argv[]) {
+
     if (argc == 1 || argc > 3) {
-        throw std::invalid_argument("No arguments provided");
+        throw std::invalid_argument("No arguments provided"); //создаем свое исключение
     }
 
     if (argc == 2) {
