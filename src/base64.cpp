@@ -1,13 +1,15 @@
 #include "base64.hpp"
 #include <cstring>
 
+char alphabet[][2] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J","K",
+                      "L", "M", "N", "O", "P", "Q", "R","S", "T","U", "V",
+                      "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g",
+                      "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
+                      "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2",
+                      "3", "4", "5", "6", "7","8", "9", "+", "/"};
+
+
 char *base64_encode(const char *s) {
-    char alphabet[][2] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J","K",
-                          "L", "M", "N", "O", "P", "Q", "R","S", "T","U", "V",
-                          "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g",
-                          "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
-                          "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2",
-                          "3", "4", "5", "6", "7","8", "9", "+", "/"};
 
     int length(0), j(0);
     unsigned char n;
@@ -71,13 +73,6 @@ char *base64_encode(const char *s) {
 }
 
 char *base64_decode(const char *s) {
-    char alphabet[][2] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J","K",
-                          "L", "M", "N", "O", "P", "Q", "R","S", "T","U", "V",
-                          "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g",
-                          "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r",
-                          "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2",
-                          "3", "4", "5", "6", "7","8", "9", "+", "/"};
-
     int length(0);
     for (int i = 0; s[i] != '\0'; i++, length++);
     char *encode = new char[length];
