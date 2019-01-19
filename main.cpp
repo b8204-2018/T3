@@ -1,26 +1,33 @@
 #include <iostream>
-#include "src/base64.hpp"
+#include "Src\Stack.h "
 
-const char OPT_ENCODE[] = "-e";
-const char OPT_DECODE[] = "-d";
+using namespace std;
+int main() {
+    Stack Stack1;
+    int elem;
+    int call=-1;
+    while (call != 3) {
+        cout << "input 1 if you want to push element in stack\n"
+                "input 2 if you want to pop element from stack\n"
+                "input 3 if you want to close program\n"
+                "input 4 if you want to see your stack\n"
+                "At the end of the day rascal may not dream of zachet, but dear lord i fucking do. Also dont use char";
+        cin >> call;
+        switch(call) {
+            case 1 :
+                cout << " Input element that you want to add to stack\n";
+                cin >> elem;
+                Stack1.Push(elem);
 
-int main(int argc, char *argv[]) {
-    if (argc == 1 || argc > 3) {
-        throw std::invalid_argument("No arguments provided");
-    }
+                break;
+            case 2 :
+                Stack1.Pop();
+                break;
+            case 4 :
+                Stack1.show();
 
-    if (argc == 2) {
-        std::cout << base64_encode(argv[1]);
-    }
-
-    if (argc == 3) {
-        size_t i = 1;
-        if (strcmp(OPT_ENCODE, argv[i++]) == 0 || strcmp(OPT_ENCODE, argv[i--]) == 0) {
-            std::cout << base64_encode(argv[i]);
-        } else if (strcmp(OPT_DECODE, argv[i++]) == 0 || strcmp(OPT_DECODE, argv[i--]) == 0) {
-            std::cout << base64_decode(argv[i]);
+                break;
         }
     }
-
     return 0;
 }
