@@ -26,6 +26,12 @@ TEST(Decode, D2) {
     EXPECT_STREQ(s, "Зеленая была");
 }
 
+TEST(Decode, Exceptions) {
+
+    EXPECT_THROW(base64_decode((const char*)"0YH"), std::invalid_argument);
+    EXPECT_THROW(base64_decode((const char*)"******"), std::invalid_argument);
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
