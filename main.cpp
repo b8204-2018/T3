@@ -1,26 +1,58 @@
-#include <iostream>
-#include "src/base64.hpp"
+﻿#include <iostream>
+#include <cstring>
 
-const char OPT_ENCODE[] = "-e";
-const char OPT_DECODE[] = "-d";
+#include "src/base64.h"
+#include "src/base64.cpp"
 
-int main(int argc, char *argv[]) {
-    if (argc == 1 || argc > 3) {
-        throw std::invalid_argument("No arguments provided");
-    }
+#include <gtest/gtest.h>
 
-    if (argc == 2) {
-        std::cout << base64_encode(argv[1]);
-    }
 
-    if (argc == 3) {
-        size_t i = 1;
-        if (strcmp(OPT_ENCODE, argv[i++]) == 0 || strcmp(OPT_ENCODE, argv[i--]) == 0) {
-            std::cout << base64_encode(argv[i]);
-        } else if (strcmp(OPT_DECODE, argv[i++]) == 0 || strcmp(OPT_DECODE, argv[i--]) == 0) {
-            std::cout << base64_decode(argv[i]);
-        }
-    }
+int main () {
 
-    return 0;
+  char * str = new char;
+  char *strEnc = new char;
+  char *strDec = new char;
+
+  std::cout << "Введите строку для кодирования \n" << std::endl;
+  std::cin >> str;
+
+TEST (base64Tests, encodeTest) {
+
+  ASSERT_STREQ (base64::encode (strTest), base64::encode (str));
+
+}
+
+TEST (base64Tests, decodeTest) {
+
+  char *strCode = base64::encode (str);
+
+
+  ASSERT_STREQ (base64::decode (strCode), base64::decode (strCode));
+
+}
+
+TEST (base64Tests, encodeDecodeTest) {
+
+  ASSERT_STREQ (base64::decode (base64::encode (str)), str);
+
+}
+
+  std::cout << "Введённая вами строка для кодирования: " << str << std::endl;
+
+  strEnc = base64::encode (str);
+
+ Результат кодирования строки: " << str << std::endl;
+  std::cout << "Имеет вид: " << strEnc << std::endl;
+
+  std::cout << "Строка для декодирования: " << strEnc << std::endl;
+
+
+  strDec = base64::decode (strEnc);
+
+
+ Результат декодирования закодированной строки: " << strEnc << std::endl;
+  std::cout << "Имеет вид: " << strDec << std::endl;
+
+
+  return 0;
 }
