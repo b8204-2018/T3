@@ -58,8 +58,6 @@ char *base64_encode(const char *s) {
     if (length%3==0){
         decode[j]='\0';
     }
-
-    std :: cout << j;
     return decode;
 }
 
