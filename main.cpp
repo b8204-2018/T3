@@ -1,5 +1,10 @@
 #include <iostream>
+#include <cstring>
 #include "src/base64.hpp"
+#include "gtest/gtest.h"
+
+
+using namespace std;
 
 const char OPT_ENCODE[] = "-e";
 const char OPT_DECODE[] = "-d";
